@@ -15,7 +15,11 @@ describe Fudge::Tasks::SubProcess do
     end
 
     it "returns false for an unsuccessful command" do
-      expect(described_class.new(:ls, '--newnre').run).to be_falsey
+      subprocess = described_class.new(:ls, '--newnre')
+      # The command above has an error which normally would be printed in the console.
+      # We don't want to see that when running this test.
+      spawn_options = {spawn_options: {:err=>'/dev/null'}}
+      expect(subprocess.run(spawn_options)).to be_falsey
     end
 
     it "returns true for a successful command" do
