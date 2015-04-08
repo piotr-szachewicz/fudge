@@ -14,6 +14,10 @@ module Fudge
     #
     # sets max score for a method to 20.0
     #
+    #    task :flog, :total => 450.0
+    #
+    # sets the maximum total score to 450.0
+    #
     #    task :flog, :average => 10.0
     #
     # sets required average to 10.0
@@ -47,9 +51,11 @@ module Fudge
       end
 
       def flog_checker(matches)
-        average, max = extract_scores(matches)
+        average, max, total = extract_scores(matches)
         if average > average_required
           "Average Complexity Higher Than #{average_required}"
+        elsif total > max_total_score
+          "Total Complexity Higher Than #{max_total_score}"
         elsif max > max_score
           "Maximum Complexity Higher Than #{max_score}"
         else
@@ -59,6 +65,10 @@ module Fudge
 
       def average_required
         options.fetch(:average, 5.0).to_f
+      end
+
+      def max_total_score
+        options.fetch(:total, Float::INFINITY).to_f
       end
 
       def max_score

@@ -93,5 +93,16 @@ EOF
         expect(task).to succeed_with_output output_good
       end
     end
+
+    context 'when :total score is supplied' do
+      it 'fails when the total is higher than :average' do
+        task = described_class.new :total => 378
+        expect(task).not_to succeed_with_output output_good
+
+        task = described_class.new :total => 379
+        expect(task).to succeed_with_output output_good
+      end
+    end
+
   end
 end
